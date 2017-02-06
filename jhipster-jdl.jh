@@ -1,0 +1,68 @@
+entity Player {
+	name String,
+	surname String,
+	birthdate LocalDate,
+	numBaskets Integer,
+	numAssists Integer,
+	numRebounds Integer, 
+	position Position
+}
+
+entity Team {
+	name String,
+	city String,
+    foundationDate LocalDate
+}
+
+entity FavouritePlayer {
+	// user
+    // player
+    favouriteDateTime ZonedDateTime
+}
+
+entity Game {
+	// eq local 
+    // eq visitante
+    name String,
+    localScore Integer, 
+    visitorScore Integer,
+    startTime LocalDate,
+    finishTime LocalDate    
+}
+
+entity GameRating {
+	score Integer,
+    scoreDateTime ZonedDateTime
+    
+}
+
+enum Position {
+    ALERO, BASE, PIVOT, ALA
+} 
+
+//local and visitor, modificado
+relationship ManyToOne {
+	Game{gameLocalTeam(name)} to Team{gameLocalTeam}, 
+    Game{gameVisitorTeam(name)} to Team{gameVisitorTeam}
+}
+
+//modificado
+relationship ManyToOne {
+	Player{team(name)} to Team{players}
+}
+
+relationship ManyToOne{
+	FavouritePlayer{user(login)} to User,
+    FavouritePlayer{player(name)} to Player{favouritePlayer}
+    
+}
+
+relationship ManyToOne{
+	GameRating{user(login)} to User,
+    GameRating{game(name)} to Game{gameRating}
+    
+}
+
+service all with serviceClass
+
+paginate all with infinite-scroll

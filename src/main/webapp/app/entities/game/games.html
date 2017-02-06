@@ -1,0 +1,72 @@
+<div>
+    <h2>Games</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="game.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span >
+                        Create new Game
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
+                    <th jh-sort-by="id"><span>ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="name"><span>Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="localScore"><span>Local Score</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="visitorScore"><span>Visitor Score</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="startTime"><span>Start Time</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="finishTime"><span>Finish Time</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="gameLocalTeam.name"><span>Game Local Team</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="gameVisitorTeam.name"><span>Game Visitor Team</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
+                <tr ng-repeat="game in vm.games track by game.id">
+                    <td><a ui-sref="game-detail({id:game.id})">{{game.id}}</a></td>
+                    <td>{{game.name}}</td>
+                    <td>{{game.localScore}}</td>
+                    <td>{{game.visitorScore}}</td>
+                        <td>{{game.startTime | date:'mediumDate'}}</td>
+                        <td>{{game.finishTime | date:'mediumDate'}}</td>
+                    <td>
+                        <a ui-sref="team-detail({id:game.gameLocalTeam.id})">{{game.gameLocalTeam.name}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="team-detail({id:game.gameVisitorTeam.id})">{{game.gameVisitorTeam.name}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="game-detail({id:game.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="game.edit({id:game.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="game.delete({id:game.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
