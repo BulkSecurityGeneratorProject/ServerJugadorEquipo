@@ -26,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.xml.ws.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
@@ -273,4 +274,13 @@ public class FavouritePlayerResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("favouritePlayer", id.toString())).build();
     }
 
+    // GET favPlayer if fav exists
+    @GetMapping("/favourite-players/favExist")
+    @Timed
+    public ResponseEntity<FavouritePlayer> getFavExists(@PathVariable String favPlayer){
+        Long userID = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get().getId();
+        FavouritePlayer aux = favouritePlayerRepository.getFavouritePlayer(userID, Long.parseLong(favPlayer));
+        if(aux == null) return new ResponseEntity<>((FavouritePlayer) null, HttpStatus.NOT_FOUND);
+        else return new ResponseEntity<>(aux,HttpStatus.OK);
+    }
 }
